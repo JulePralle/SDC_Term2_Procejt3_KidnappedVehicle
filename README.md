@@ -15,6 +15,7 @@ Below is a video from udacity of what it looks like when the simulator successfu
 
 ## Particle Filter
 The particle filter technique provides a well-established methodology for generating samples from the required distribution without requiring assumptions about the state space or the state distributions. Particle filter implement the prediction updating transitions directly by using a genetic type of mutation-selection particle algorithm. The samples from the distribution are represented by a set of particles. Each particle has a likelihood weight assigned to it that represents he probability of that particle being sampled from the probability density function. 
+
 The video below from the udacity is a great example of the technique of a particle filter by showing a global localization of a robot. The red dots represent the particles and the blue lines are the range measuremts of sonar sensors.
 
 ![udacity_PF](./udacity_PF.gif) 
@@ -28,30 +29,31 @@ The video below from the udacity is a great example of the technique of a partic
  
 #### [/src/particle_filter.cpp:](https://github.com/JulePralle/SDC_Term2_Project3_KidnappedVehicle/blob/master/src/particle_filter.cpp)
 * contains all of the implementations of the following functions of the particle filter class:
-    1. init function:
-    * initialize all aprticles to first position and all weights to 1
-    * takes as input a GPS position (x,y) and initial heading estimate (theta) and an array of uncertainties (std)
-    * samples from a Gaussian distribution centered around these measurements to initialize all the particles
-    * initialize all particle weights to 1
+    #### init function:
+     * initialize all aprticles to first position and all weights to 1
+     * takes as input a GPS position (x,y) and initial heading estimate (theta) and an array of uncertainties (std)
+     * samples from a Gaussian distribution centered around these measurements to initialize all the particles
+     * initialize all particle weights to 1
     
-    2. prediction function:
-    * takes as input the amount of time between time steps, the velocity and yaw rate measurement uncertainties, current time step             velocity and yaw rate measurements
-    * using the measurements, the function updates each particle's position estimates in account for sensor noise by adding Gaussian           noise
+    #### prediction function:
+     * takes as input the amount of time between time steps, the velocity and yaw rate measurement uncertainties, current time step             velocity and yaw rate measurements
+     * using the measurements, the function updates each particle's position estimates in account for sensor noise by adding Gaussian           noise
     
-    3. dataAssociation function:
-    * takes as input the vector of predicted landmark objects (prediction measurements between one particular particle and all of the         map landmarks within sensor range) and the vector of observation landmarks (actual landmark measurements gathered from LIDAR)
-    * performs nearest neighbor data association
-    * assigning each sensor observationto the map landmark ID associated with it
+    #### dataAssociation function:
+     * takes as input the vector of predicted landmark objects (prediction measurements between one particular particle and all of the         map landmarks within sensor range) and the vector of observation landmarks (actual landmark measurements gathered from LIDAR)
+     * performs nearest neighbor data association
+     * assigning each sensor observationto the map landmark ID associated with it
     
-    4. updateWeights function:
-    * takes as input the range of sensor, the landmark measurements uncertainties, a vector of landmark measurements and the map               landmarks
-    * predicts measurements to all map landmarks within sensor range of each particle
-    * calculates the new weight of each particle by using the multivariante Gaussian probability density function
-    * normalize the weights
+    #### updateWeights function:
+     * takes as input the range of sensor, the landmark measurements uncertainties, a vector of landmark measurements and the map               landmarks
+     * predicts measurements to all map landmarks within sensor range of each particle
+     * calculates the new weight of each particle by using the multivariante Gaussian probability density function
+     * normalize the weights
     
-    5. resample function:
-    * updates the particle to the Bayesian posterior distribution using the discrete distribution function
+    #### resample function:
+     * updates the particle to the Bayesian posterior distribution using the discrete distribution function
     
+
 
 
 # Udacity Part
