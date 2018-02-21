@@ -1,13 +1,61 @@
-# Overview
-This repository contains all the code needed to complete the final project for the Localization course in Udacity's Self-Driving Car Nanodegree.
+# The Kidnapped Vehicle
 
-#### Submission
-All you will submit is your completed version of `particle_filter.cpp`, which is located in the `src` directory. You should probably do a `git pull` before submitting to verify that your project passes the most up-to-date version of the grading code (there are some parameters in `src/main.cpp` which govern the requirements on accuracy and run time.)
+Self-Driving Car Engineer Nanodegree Program
 
-## Project Introduction
-Your robot has been kidnapped and transported to a new location! Luckily it has a map of this location, a (noisy) GPS estimate of its initial location, and lots of (noisy) sensor and control data.
+---
 
-In this project you will implement a 2 dimensional particle filter in C++. Your particle filter will be given a map and some initial localization information (analogous to what a GPS would provide). At each time step your filter will also get observation and control data. 
+
+
+## Introduction
+In this project a two dimensional particle filter will be implemented in C++ capable of localizing a vehicle within desired accurancy and time. The particle filter will be given a map and some initial localization information (GPS). At each time step the filter will also get observation and control data. 
+
+Below is a video from udacity of what it looks like when the simulator successfully is able to track the car to a particle. The simulator can display the best particle's sensed positions, along with the corresponding map ID associations. This can be extremely helpful when making sure transition and association calculations were done correctly.  The green laser sensors from the car nearly overlap the blue laser sensors from the particle, this means that the particle transition calculations were done correctly.
+
+![udacity_exampleVideo](./udacity_exampleVideo.gif) 
+
+## Particle Filter
+The particle filter technique provides a well-established methodology for generating samples from the required distribution without requiring assumptions about the state space or the state distributions. Particle filter implement the prediction updating transitions directly by using a genetic type of mutation-selection particle algorithm. The samples from the distribution are represented by a set of particles. Each particle has a likelihood weight assigned to it that represents he probability of that particle being sampled from the probability density function. 
+The video below from the udacity is a great example of the technique of a particle filter by showing a global localization of a robot. The red dots represent the particles and the blue lines are the range measuremts of sonar sensors.
+
+![udacity_PF](./udacity_PF.gif) 
+
+## Files and code
+
+#### [/src/main.cpp:](https://github.com/JulePralle/SDC_Term2_Project3_KidnappedVehicle/blob/master/src/main.cpp)
+* runs the particle filter
+* measures the runtime and calculate the weighted error at each time step
+* reads in the math, control and observation data for each time step
+ 
+#### [/src/particle_filter.cpp:](https://github.com/JulePralle/SDC_Term2_Project3_KidnappedVehicle/blob/master/src/particle_filter.cpp)
+* contains all of the implementations of the following functions of the particle filter class:
+    1. init function:
+    * initialize all aprticles to first position and all weights to 1
+    * takes as input a GPS position (x,y) and initial heading estimate (theta) and an array of uncertainties (std)
+    * samples from a Gaussian distribution centered around these measurements to initialize all the particles
+    * initialize all particle weights to 1
+    
+    2. prediction function:
+    * takes as input the amount of time between time steps, the velocity and yaw rate measurement uncertainties, current time step             velocity and yaw rate measurements
+    * using the measurements, the function updates each particle's position estimates in account for sensor noise by adding Gaussian           noise
+    
+    3. dataAssociation function:
+    * takes as input the vector of predicted landmark objects (prediction measurements between one particular particle and all of the         map landmarks within sensor range) and the vector of observation landmarks (actual landmark measurements gathered from LIDAR)
+    * performs nearest neighbor data association
+    * assigning each sensor observationto the map landmark ID associated with it
+    
+    4. updateWeights function:
+    * takes as input the range of sensor, the landmark measurements uncertainties, a vector of landmark measurements and the map               landmarks
+    * predicts measurements to all map landmarks within sensor range of each particle
+    * calculates the new weight of each particle by using the multivariante Gaussian probability density function
+    * normalize the weights
+    
+    5. resample function:
+    * updates the particle to the Bayesian posterior distribution using the discrete distribution function
+    
+
+
+# Udacity Part
+--- 
 
 ## Running the Code
 This project involves the Term 2 Simulator which can be downloaded [here](https://github.com/udacity/self-driving-car-sim/releases)
